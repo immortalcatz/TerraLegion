@@ -1,6 +1,5 @@
 package com.jmrapp.terralegion.game.world.block.impl;
 
-import com.jmrapp.terralegion.engine.views.drawables.Drawable;
 import com.jmrapp.terralegion.game.world.block.Block;
 import com.jmrapp.terralegion.game.world.block.BlockManager;
 import com.jmrapp.terralegion.game.world.block.BlockType;
@@ -9,8 +8,8 @@ import com.jmrapp.terralegion.game.world.chunk.ChunkManager;
 
 public class WoodBlock extends Block {
 
-    public WoodBlock(BlockType type, Drawable drawable, float lightBlockingAmount, boolean collides, boolean transparent, float initHealth, float resistance) {
-        super(type, drawable, lightBlockingAmount, collides, transparent, initHealth, resistance);
+    public WoodBlock(BlockType type, float lightBlockingAmount, boolean collides, boolean transparent, float initHealth, float resistance) {
+        super(type, lightBlockingAmount, collides, transparent, initHealth, resistance);
     }
 
     /**

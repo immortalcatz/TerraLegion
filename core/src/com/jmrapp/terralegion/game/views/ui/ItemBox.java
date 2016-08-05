@@ -8,8 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.jmrapp.terralegion.engine.views.drawables.Drawable;
 import com.jmrapp.terralegion.engine.views.drawables.ResourceManager;
 import com.jmrapp.terralegion.game.item.ItemStack;
+import com.jmrapp.terralegion.game.renderer.ItemIconManager;
 import com.jmrapp.terralegion.game.utils.CachePool;
 
 /**
@@ -73,10 +75,11 @@ public class ItemBox extends Table {
 
 			float width = itemLabel.getWidth();
 			itemLabel.setBounds(5, 60 - 15, width, 15);
+			Drawable itemIcon = ItemIconManager.getIcon(stack);
 			if (itemImage == null) {
-				itemImage = new Image(stack.getItem().getIcon().getTextureRegion());
+				itemImage = new Image(itemIcon.getTextureRegion());
 			} else {
-				itemImage.setDrawable(new TextureRegionDrawable(stack.getItem().getIcon().getTextureRegion()));
+				itemImage.setDrawable(new TextureRegionDrawable(itemIcon.getTextureRegion()));
 			}
 			itemImage.setVisible(true);
 			itemImage.setBounds(30 - (itemImage.getWidth() / 2), 30 - (itemImage.getHeight() / 2), itemImage.getWidth(), itemImage.getHeight());

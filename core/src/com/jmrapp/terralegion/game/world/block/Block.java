@@ -1,10 +1,6 @@
 package com.jmrapp.terralegion.game.world.block;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.jmrapp.terralegion.engine.views.drawables.Drawable;
 import com.jmrapp.terralegion.engine.world.entity.WorldBody;
 import com.jmrapp.terralegion.game.world.chunk.Chunk;
 import com.jmrapp.terralegion.game.world.chunk.ChunkManager;
@@ -15,28 +11,19 @@ import com.jmrapp.terralegion.game.utils.LightUtils;
 public class Block {
 
 	protected final BlockType type;
-	protected Drawable drawable;
 	protected float lightBlockingAmount;
 	protected boolean collides;
 	protected boolean transparent;
 	protected float initHealth;
 	protected float resistance;
 
-	public Block(BlockType type, Drawable drawable, float lightBlockingAmount, boolean collides, boolean transparent, float initHealth, float resistance) {
+	public Block(BlockType type, float lightBlockingAmount, boolean collides, boolean transparent, float initHealth, float resistance) {
 		this.type = type;
-		this.drawable = drawable;
 		this.lightBlockingAmount = lightBlockingAmount;
 		this.collides = collides;
 		this.transparent = transparent;
 		this.initHealth = initHealth;
 		this.resistance = resistance;
-	}
-
-	public void render(OrthographicCamera camera, SpriteBatch sb, float x, float y, float lightValue) {
-		float value = lightValue < LightUtils.MIN_LIGHT_VALUE ? LightUtils.MIN_LIGHT_VALUE : lightValue;
-		sb.setColor(value, value, value, 1);
-		drawable.render(sb, x, y);
-		sb.setColor(Color.WHITE);
 	}
 
 	public void onBreak(ChunkManager chunkManager, Chunk chunk, int chunkTileX, int chunkTileY) {

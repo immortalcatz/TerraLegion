@@ -1,6 +1,5 @@
 package com.jmrapp.terralegion.game.item.impl;
 
-import com.jmrapp.terralegion.engine.views.drawables.Drawable;
 import com.jmrapp.terralegion.game.item.Item;
 import com.jmrapp.terralegion.game.item.ItemCategory;
 import com.jmrapp.terralegion.game.item.ItemType;
@@ -24,8 +23,8 @@ public abstract class ToolItem extends Item {
 
 	protected ItemType type;
 
-	public ToolItem(ItemType type, String name, Drawable icon, int maxItemStack, float damage, float power, float reach, float useDelay) {
-		super(type.getId(), ItemCategory.TOOL, name, icon, maxItemStack);
+	public ToolItem(ItemType type, String name, int maxItemStack, float damage, float power, float reach, float useDelay) {
+		super(type.getId(), ItemCategory.TOOL, name, maxItemStack);
 		this.damage = damage;
 		this.power = power;
 		this.type = type;

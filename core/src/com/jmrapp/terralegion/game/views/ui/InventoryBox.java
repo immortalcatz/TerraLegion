@@ -3,9 +3,11 @@ package com.jmrapp.terralegion.game.views.ui;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.jmrapp.terralegion.engine.views.drawables.Drawable;
 import com.jmrapp.terralegion.engine.views.drawables.ResourceManager;
 import com.jmrapp.terralegion.engine.views.drawables.ui.Button;
 import com.jmrapp.terralegion.game.item.ItemStack;
+import com.jmrapp.terralegion.game.renderer.ItemIconManager;
 
 /**
  * Created by Jon on 10/5/15.
@@ -31,7 +33,8 @@ public class InventoryBox extends Button {
 			sb.draw(bg, x, y);
 
 		if (itemStack != null) {
-			itemStack.getItem().getIcon().render(sb, x + (bg.getWidth() / 2) - (itemStack.getItem().getIcon().getWidth() / 2), y + (bg.getHeight() / 2) - (itemStack.getItem().getIcon().getHeight() / 2));
+			Drawable itemIcon = ItemIconManager.getIcon(itemStack);
+			itemIcon.render(sb, x + (bg.getWidth() / 2) - (itemIcon.getWidth() / 2), y + (bg.getHeight() / 2) - (itemIcon.getHeight() / 2));
 			font.draw(sb, String.valueOf(itemStack.getStack()), x + 5, y + bg.getHeight() - 10);
 		}
 	}

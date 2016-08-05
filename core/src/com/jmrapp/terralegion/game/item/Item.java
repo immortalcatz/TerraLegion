@@ -1,7 +1,5 @@
 package com.jmrapp.terralegion.game.item;
 
-import com.jmrapp.terralegion.engine.views.drawables.Drawable;
-
 /**
  * Created by Jon on 10/1/15.
  */
@@ -9,15 +7,13 @@ public class Item {
 
 	private int typeId;
 	private String name;
-	private Drawable icon;
 	private int maxItemStack;
 	private ItemCategory category;
 
-	public Item(int typeId, ItemCategory category, String name, Drawable icon, int maxItemStack) {
+	public Item(int typeId, ItemCategory category, String name, int maxItemStack) {
 		this.typeId = typeId;
 		this.category = category;
 		this.name = name;
-		this.icon = icon;
 		this.maxItemStack = maxItemStack;
 	}
 
@@ -27,10 +23,6 @@ public class Item {
 
 	public String getName() {
 		return name;
-	}
-
-	public Drawable getIcon() {
-		return icon;
 	}
 
 	public int getMaxItemStack() {

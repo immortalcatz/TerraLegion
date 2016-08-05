@@ -1,6 +1,5 @@
 package com.jmrapp.terralegion.game.item.impl;
 
-import com.jmrapp.terralegion.engine.views.drawables.Drawable;
 import com.jmrapp.terralegion.game.world.block.BlockType;
 import com.jmrapp.terralegion.game.item.Item;
 import com.jmrapp.terralegion.game.item.ItemCategory;
@@ -12,8 +11,8 @@ public class BlockItem extends Item {
 
 	private BlockType type;
 
-	public BlockItem(BlockType type, ItemCategory category, String name, Drawable icon, int maxStack) {
-		super(type.getId(), category, name, icon, maxStack);
+	public BlockItem(BlockType type, ItemCategory category, String name, int maxStack) {
+		super(type.getId(), category, name, maxStack);
 		this.type = type;
 	}
 

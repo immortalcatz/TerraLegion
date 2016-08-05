@@ -2,7 +2,6 @@ package com.jmrapp.terralegion.game.world.entity;
 
 import com.jmrapp.terralegion.engine.world.collision.CollisionInfo;
 import com.jmrapp.terralegion.engine.world.collision.CollisionSide;
-import com.jmrapp.terralegion.engine.views.drawables.Drawable;
 import com.jmrapp.terralegion.engine.world.entity.BodyType;
 import com.jmrapp.terralegion.engine.world.entity.WorldBody;
 import com.jmrapp.terralegion.engine.utils.Timer;
@@ -14,9 +13,11 @@ import java.util.HashMap;
 /**
  * Created by Jon on 9/30/15.
  */
-public class Drop extends TexturedEntity {
+public class Drop extends WorldBody {
 
-    private float DEATH_TIME = 60;
+    private static final float WIDTH = 16f;
+    private static final float HEIGHT = 16f;
+    private static final float DEATH_TIME = 60;
     private static HashMap<Integer, Drop> dropQueue = new HashMap<Integer, Drop>();
 
     private Item item;
@@ -25,24 +26,12 @@ public class Drop extends TexturedEntity {
     private int stackCount;
 
     public Drop(Item item) {
-        super(item.getIcon(), 0, 0, BodyType.DYNAMIC, 0f);
-        this.item = item;
-    }
-
-    public Drop(Item item, Drawable dropIcon) {
-        super(dropIcon, 0, 0, BodyType.DYNAMIC, 0f);
+        super(0, 0, WIDTH, HEIGHT, BodyType.DYNAMIC);
         this.item = item;
     }
 
     private Drop(Item item, int stackCount, float x, float y) {
-        super(item.getIcon(), x, y, BodyType.DYNAMIC, 0f);
-        this.item = item;
-        this.stackCount = stackCount;
-        this.startTime = Timer.getGameTimeElapsed();
-    }
-
-    private Drop(Item item, Drawable dropIcon, int stackCount, float x, float y) {
-        super(dropIcon, x, y, BodyType.DYNAMIC, 0f);
+        super(x, y, WIDTH, HEIGHT, BodyType.DYNAMIC);
         this.item = item;
         this.stackCount = stackCount;
         this.startTime = Timer.getGameTimeElapsed();
@@ -118,11 +107,7 @@ public class Drop extends TexturedEntity {
             drop.set(stackCount, x, y);
             return drop;
         }
-        if (drawable != item.getIcon()) { //If there is a custom drop drawable set which is not the same as the icon drawable
-            return new Drop(item, drawable, stackCount, x, y);
-        } else {
-            return new Drop(item, stackCount, x, y);
-        }
+        return new Drop(item, stackCount, x, y);
     }
 
 }

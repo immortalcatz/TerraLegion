@@ -5,6 +5,9 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.jmrapp.terralegion.engine.camera.OrthoCamera;
+import com.jmrapp.terralegion.engine.world.entity.WorldBody;
+import com.jmrapp.terralegion.game.renderer.BlockDrawableManager;
+import com.jmrapp.terralegion.game.renderer.entity.EntityRendererManager;
 import com.jmrapp.terralegion.game.world.DayManager;
 import com.jmrapp.terralegion.game.world.block.Block;
 import com.jmrapp.terralegion.game.world.block.BlockManager;
@@ -13,7 +16,6 @@ import com.jmrapp.terralegion.game.world.block.BlockPropertiesFactory;
 import com.jmrapp.terralegion.game.world.block.BlockType;
 import com.jmrapp.terralegion.game.world.entity.Drop;
 import com.jmrapp.terralegion.game.world.entity.LivingEntity;
-import com.jmrapp.terralegion.game.world.entity.TexturedEntity;
 import com.jmrapp.terralegion.game.utils.LightUtils;
 import com.jmrapp.terralegion.game.utils.Vector2Factory;
 
@@ -43,7 +45,7 @@ public class Chunk {
 	/** The highest block in each column to calculate the sun lighting. */
 	private int[] highestBlocks = new int[CHUNK_SIZE];
 
-	private Array<TexturedEntity> entities = new Array<TexturedEntity>();
+	private Array<WorldBody> entities = new Array<WorldBody>();
 
 	/** The chunk manager instance. */
 	private ChunkManager chunkManager;
@@ -85,7 +87,7 @@ public class Chunk {
 	}
 
 	public void update(OrthoCamera camera, float centerX, float centerY) {
-		for (TexturedEntity obj : entities) {
+		for (WorldBody obj : entities) {
 			if (obj instanceof Drop) {
 				Drop drop = (Drop) obj;
 				if (ChunkManager.isOnScreen(obj.getX(), obj.getY(), camera, centerX, centerY)) {
@@ -121,26 +123,28 @@ public class Chunk {
 					if ((type == null || type == BlockType.AIR) || BlockManager.getBlock(type).isTransparent()) {
 						BlockType wallType = getWall(x, y);
 						if (wallType != null && wallType != BlockType.AIR) {
-							BlockManager.getBlock(wallType).render(camera, sb, x * ChunkManager.TILE_SIZE + (startX * Chunk.CHUNK_SIZE * ChunkManager.TILE_SIZE), y * ChunkManager.TILE_SIZE + (startY * Chunk.CHUNK_SIZE * ChunkManager.TILE_SIZE), getLightValue(x, y));
+							BlockDrawableManager.render(wallType, sb, x * ChunkManager.TILE_SIZE + (startX * Chunk.CHUNK_SIZE * ChunkManager.TILE_SIZE), y * ChunkManager.TILE_SIZE + (startY * Chunk.CHUNK_SIZE * ChunkManager.TILE_SIZE), getLightValue(x, y));
 						}
 					}
 					if (type != null && type != BlockType.AIR) {
-						BlockManager.getBlock(type).render(camera, sb, x * ChunkManager.TILE_SIZE + (startX * Chunk.CHUNK_SIZE * ChunkManager.TILE_SIZE), y * ChunkManager.TILE_SIZE + (startY * Chunk.CHUNK_SIZE * ChunkManager.TILE_SIZE), getLightValue(x, y));
+						float blockX = x * ChunkManager.TILE_SIZE + (startX * Chunk.CHUNK_SIZE * ChunkManager.TILE_SIZE);
+						float blockY = y * ChunkManager.TILE_SIZE + (startY * Chunk.CHUNK_SIZE * ChunkManager.TILE_SIZE);
+						BlockDrawableManager.render(type, sb, blockX, blockY, getLightValue(x, y));
 					}
 				}
 			}
 		}
-		for (TexturedEntity entity : entities) {
+		for (WorldBody entity : entities) {
 			renderEntity(entity, sb, camera, centerX, centerY);
 		}
 	}
 
-	public void renderEntity(TexturedEntity entity, SpriteBatch sb, OrthoCamera camera, float centerX, float centerY) {
+	public void renderEntity(WorldBody entity, SpriteBatch sb, OrthoCamera camera, float centerX, float centerY) {
 		if (ChunkManager.isOnScreen(entity.getX(), entity.getY(), camera, centerX, centerY)) {
 			int tx = ChunkManager.pixelToTilePosition(entity.getX()) - (startX * CHUNK_SIZE);
 			int ty = ChunkManager.pixelToTilePosition(entity.getY()) - (startY * CHUNK_SIZE);
 			if (tx >= 0 && tx < CHUNK_SIZE && ty >= 0 && ty < CHUNK_SIZE) {
-				entity.render(sb, getLightValue(tx, ty));
+				EntityRendererManager.render(entity, sb, getLightValue(tx, ty));
 			} else { //This entity is in the wrong chunk because it moved out of it
 				Chunk chunk = relocateEntity(entity);
 				if (chunk != null) {
@@ -150,7 +154,7 @@ public class Chunk {
 		}
 	}
 
-	private Chunk relocateEntity(TexturedEntity entity) {
+	private Chunk relocateEntity(WorldBody entity) {
 		Chunk chunk = chunkManager.getChunkFromPos(entity.getX(), entity.getY());
 		if (chunk != null) {
 			chunk.addEntity(removeEntity(entity));
@@ -164,7 +168,7 @@ public class Chunk {
 		Array<LivingEntity> foundEntities = new Array<LivingEntity>();
 
 		for (int i = 0; i < entities.size; i++) {
-			TexturedEntity entity = entities.get(i);
+			WorldBody entity = entities.get(i);
 			if (entity instanceof LivingEntity) {
 				if (origin.dst(entity.getX(), entity.getY()) <= range) {
 					foundEntities.add((LivingEntity) entity);
@@ -309,11 +313,11 @@ public class Chunk {
 		return highestBlocks[x];
 	}
 
-	public void addEntity(TexturedEntity entity) {
+	public void addEntity(WorldBody entity) {
 		entities.add(entity);
 	}
 
-	public TexturedEntity removeEntity(TexturedEntity entity) {
+	public WorldBody removeEntity(WorldBody entity) {
 		if (entities.removeValue(entity, false))
 			return entity;
 		return null;

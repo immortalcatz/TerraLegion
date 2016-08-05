@@ -10,6 +10,7 @@ import com.jmrapp.terralegion.game.io.LoadedWorldInfo;
 import com.jmrapp.terralegion.game.io.WorldIO;
 import com.jmrapp.terralegion.game.item.ItemManager;
 import com.jmrapp.terralegion.game.item.ItemType;
+import com.jmrapp.terralegion.game.renderer.entity.EntityRendererManager;
 import com.jmrapp.terralegion.game.world.block.BlockType;
 import com.jmrapp.terralegion.game.world.chunk.Chunk;
 import com.jmrapp.terralegion.game.world.chunk.ChunkManager;
@@ -81,7 +82,7 @@ public class World {
 	
 	public void render(SpriteBatch sb, OrthoCamera camera) {
 		chunkManager.renderOnScreen(sb, camera, camera.getPos().x, camera.getPos().y);
-		player.render(sb, chunkManager.getLightValueFromPos(player.getX(), player.getY()));
+		EntityRendererManager.render(player, sb, chunkManager.getLightValueFromPos(player.getX(), player.getY()));
 	}
 	
 	public ChunkManager getChunkManager() {

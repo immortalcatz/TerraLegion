@@ -1,6 +1,5 @@
 package com.jmrapp.terralegion.game.world.block;
 
-import com.jmrapp.terralegion.engine.views.drawables.Drawable;
 import com.jmrapp.terralegion.game.item.inventory.Inventory;
 
 /**
@@ -13,8 +12,8 @@ public abstract class InventoryBlock extends Block{
     /** For management of the block's inventory **/
     private Inventory inventory;
 
-    public InventoryBlock(int inventoryWidth, int inventoryHeight ,BlockType type, Drawable drawable, float lightBlockingAmount, boolean collides, boolean transparent, float initHealth, float resistance){
-        super(type, drawable, lightBlockingAmount, collides, transparent, initHealth, resistance);
+    public InventoryBlock(int inventoryWidth, int inventoryHeight, BlockType type, float lightBlockingAmount, boolean collides, boolean transparent, float initHealth, float resistance){
+        super(type, lightBlockingAmount, collides, transparent, initHealth, resistance);
 
         this.inventory = new Inventory(inventoryWidth, inventoryHeight);
     }

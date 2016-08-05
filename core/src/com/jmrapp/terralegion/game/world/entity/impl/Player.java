@@ -2,9 +2,6 @@ package com.jmrapp.terralegion.game.world.entity.impl;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.jmrapp.terralegion.engine.views.drawables.AnimationDrawable;
-import com.jmrapp.terralegion.engine.views.drawables.ResourceManager;
-import com.jmrapp.terralegion.engine.views.drawables.SpriteSheet;
 import com.jmrapp.terralegion.engine.world.entity.BodyType;
 import com.jmrapp.terralegion.game.item.ItemManager;
 import com.jmrapp.terralegion.game.item.ItemStack;
@@ -16,20 +13,17 @@ import com.jmrapp.terralegion.game.world.entity.LivingEntity;
 
 public class Player extends LivingEntity {
 
+	private static final float WIDTH = 32f;
+	private static final float HEIGHT = 36f;
+
 	private Inventory inventory;
 
-	private final float walkingVelocity = 12f;
-
 	public Player(float x, float y) {
-		super(createAnimationDrawable(), x, y, BodyType.DYNAMIC, 12f, 100, 100, 6.5f);
+		super(x, y, WIDTH, HEIGHT, BodyType.DYNAMIC, 12f, 100, 100, 6.5f);
 		inventory = new Inventory(5, 8);
 
 		this.inventory.addItemStack(ItemManager.getInstance().getItem(BlockType.WOOD_CHEST), 1);
 	}
-
-    private static AnimationDrawable createAnimationDrawable() {
-        return new AnimationDrawable(new SpriteSheet(ResourceManager.getInstance().getTexture("playerAnimated"), 32, 36, 4, 4));
-    }
 
 	public void pickUpDrop(Drop drop, Chunk chunk) {
 		if (inventory.addItemStack(drop.getItem(), drop.getStackCount())) {
@@ -45,10 +39,10 @@ public class Player extends LivingEntity {
 				jump();
 		}
 		if (Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.LEFT)) {
-			addVelocity(-walkingVelocity, 0);
+			addVelocity(-getSpeed(), 0);
 		}
 		if (Gdx.input.isKeyPressed(Keys.D) || Gdx.input.isKeyPressed(Keys.RIGHT)) {
-			addVelocity(walkingVelocity, 0);
+			addVelocity(getSpeed(), 0);
 		}
 	}
 

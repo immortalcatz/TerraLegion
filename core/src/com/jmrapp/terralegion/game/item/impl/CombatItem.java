@@ -1,6 +1,5 @@
 package com.jmrapp.terralegion.game.item.impl;
 
-import com.jmrapp.terralegion.engine.views.drawables.Drawable;
 import com.jmrapp.terralegion.game.item.ItemType;
 import com.jmrapp.terralegion.game.world.block.BlockType;
 
@@ -9,8 +8,8 @@ import com.jmrapp.terralegion.game.world.block.BlockType;
  */
 public class CombatItem extends ToolItem {
 
-	public CombatItem(ItemType type, String name, Drawable icon, int maxItemStack, float damage, float power, float reach, float useDelay) {
-		super(type, name, icon, maxItemStack, damage, power, reach, useDelay);
+	public CombatItem(ItemType type, String name, int maxItemStack, float damage, float power, float reach, float useDelay) {
+		super(type, name, maxItemStack, damage, power, reach, useDelay);
 	}
 
 	public boolean canDamageBlock(BlockType type) {
